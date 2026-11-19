@@ -72,4 +72,12 @@ public class ClienteFTP {
         return lista;
     }
 
+    public boolean entrarDiretorio(String nomePasta) throws IOException {
+        return ftp.changeWorkingDirectory(nomePasta);
+    }
+
+    public boolean voltarDiretorio() throws IOException {
+        return ftp.changeToParentDirectory();
+    }
+
 }

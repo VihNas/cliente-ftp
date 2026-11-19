@@ -49,6 +49,8 @@ public class Main {
                 System.out.println("2 - Mostrar última resposta do servidor");
                 System.out.println("3 - Listar arquivos");
                 System.out.println("4 - Listar diretórios");
+                System.out.println("5 - Entrar em diretório");
+                System.out.println("6 - Voltar um nível");
                 System.out.println("0 - Sair");
                 System.out.println("Escolha uma opção:");
 
@@ -78,6 +80,19 @@ public class Main {
                             for (String diretorio : cliente.listarDiretorios()) {
                                 System.out.println(diretorio);
                             }
+                            break;
+
+                        case 5:
+                            System.out.println("Digite o nome da pasta: ");
+                            String nomePasta = teclado.nextLine();
+
+                            boolean entrou = cliente.entrarDiretorio(nomePasta);
+                            mostrarResultado(entrou, cliente);
+                            break;
+
+                        case 6:
+                            boolean voltou = cliente.voltarDiretorio();
+                            mostrarResultado(voltou, cliente);
                             break;
 
                         case 0:
