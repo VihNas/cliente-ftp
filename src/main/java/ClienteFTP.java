@@ -1,6 +1,9 @@
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTPFile;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.io.IOException;
 
@@ -41,4 +44,32 @@ public class ClienteFTP {
     public String ultimaResposta() {
         return ftp.getReplyString();
     }
+
+
+    //lista somente os arquivos do diretório atual
+    public List<String> listarArquivos() throws IOException {
+        FTPFile[] arquivos = ftp.listFiles();
+        List<String> lista = new ArrayList<>();
+
+        for (FTPFile arquivo : arquivos) {
+            if (arquivo.isFile()) {
+                lista.add(arquivo.getName()+ " - " +arquivo.getSize()+ " bytes");
+            }
+        }
+        return lista;
+    }
+
+    //lista somente os diretorios do diretorio atual
+    public List<String> listarDiretorios() throws IOException {
+        FTPFile[] arquivos=ftp.listFiles();
+        List<String> lista= new ArrayList<>();
+
+        for (FTPFile arquivo : arquivos) {
+            if (arquivo.isDirectory()) {
+                lista.add(arquivo.getName());
+            }
+        }
+        return lista;
+    }
+
 }
