@@ -3,13 +3,10 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.IOException;
 
 public class ClienteFTP {
     private final FTPClient ftp = new FTPClient(); // objeto responsável pela conexão ftp
@@ -106,5 +103,34 @@ public class ClienteFTP {
 
     public boolean removerArquivo(String nomeArquivo) throws IOException {
         return ftp.deleteFile(nomeArquivo);
+    }
+
+    public boolean enviarArquivo(String caminhoArquivo) throws IOException {
+        File arquivo = new File(caminhoArquivo);
+
+        if (!arquivo.isFile()) {    //verifica se o arquivo existe
+            System.out.println("Arquivo não encontrado!");
+            return false;
+        }
+
+        //envia o arquivo usando nome original
+        try (FileInputStream entrada = new FileInputStream(arquivo)) {
+            boolean sucesso = ftp.storeFile(arquivo.getName(), entrada);
+            System.out.println("Resposta do servidor: " + ftp.getReplyString());
+            return sucesso;
+        }
+    }
+
+
+    public boolean baixarArquivo(String nomeArquivo, String caminhoDestino) throws IOException {
+        File arquivo= new File(caminhoDestino);
+        try (FileOutputStream saida = new FileOutputStream(arquivo)) {
+            boolean sucesso = ftp.retrieveFile(nomeArquivo, saida);
+
+            if (!sucesso) {  //apaga o arquivo caso o download falhe
+                arquivo.delete();
+            }
+            return sucesso;
+        }
     }
 }

@@ -56,6 +56,8 @@ public class Main {
                 System.out.println("9 - Remover diretório");
                 System.out.println("10 - Criar arquivo");
                 System.out.println("11 - Remover arquivo");
+                System.out.println("12 - Enviar arquivo (Upload)");
+                System.out.println("13 - Baixar arquivo (Download)");
                 System.out.println("0 - Sair");
                 System.out.println("Escolha uma opção:");
 
@@ -146,6 +148,25 @@ public class Main {
                             mostrarResultado(removido, cliente);
                             break;
 
+                        case 12:
+                            System.out.println("Digite o caminho do arquivo que deseja enviar:");
+                            String caminhoUpload = teclado.nextLine();
+
+                            boolean enviado = cliente.enviarArquivo(caminhoUpload);
+                            mostrarResultado(enviado, cliente);
+                            break;
+
+                        case 13:
+                            System.out.println("Digite o nome do arquivo no servidor:");
+                            String nomeDownload = teclado.nextLine();
+
+                            System.out.println("Digite o caminho onde deseja salvar:");
+                            String caminhoDownload = teclado.nextLine();
+
+                            boolean baixado = cliente.baixarArquivo(nomeDownload, caminhoDownload);
+                            mostrarResultado(baixado, cliente);
+                            break;
+
                         case 0:
                             System.out.println("Encerrando o programa...");
                             break;
@@ -161,6 +182,7 @@ public class Main {
 
         } catch (IOException e) {
             System.out.println("Erro na conexão com o servidor: " + e.getMessage());
+            e.printStackTrace();
 
         } catch (NumberFormatException e) {
             System.out.println("Erro: a porta deve ser um número inteiro.");
