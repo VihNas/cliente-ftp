@@ -80,4 +80,16 @@ public class ClienteFTP {
         return ftp.changeToParentDirectory();
     }
 
+    public boolean criarDiretorio(String nomePasta) throws IOException {
+        return ftp.makeDirectory(nomePasta);
+    }
+
+    public boolean renomearDiretorio(String nomeAtual, String novoNome) throws IOException {
+        return ftp.rename(nomeAtual, novoNome);
+    }
+
+    public boolean removerDiretorio(String nomePasta) throws IOException {
+        return ftp.removeDirectory(nomePasta);
+    }
+
 }

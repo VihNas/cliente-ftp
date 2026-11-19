@@ -51,6 +51,9 @@ public class Main {
                 System.out.println("4 - Listar diretórios");
                 System.out.println("5 - Entrar em diretório");
                 System.out.println("6 - Voltar um nível");
+                System.out.println("7 - Criar diretório");
+                System.out.println("8 - Renomear diretório");
+                System.out.println("9 - Remover diretório");
                 System.out.println("0 - Sair");
                 System.out.println("Escolha uma opção:");
 
@@ -94,6 +97,34 @@ public class Main {
                             boolean voltou = cliente.voltarDiretorio();
                             mostrarResultado(voltou, cliente);
                             break;
+
+                        case 7:
+                            System.out.println("Digite o nome da nova pasta:");
+                            String novaPasta = teclado.nextLine();
+
+                            boolean criada = cliente.criarDiretorio(novaPasta);
+                            mostrarResultado(criada, cliente);
+                            break;
+
+                        case 8:
+                            System.out.println("Digite o nome atual da pasta:");
+                            String nomeAtual = teclado.nextLine();
+
+                            System.out.println("Digite o novo nome da pasta:");
+                            String novoNome = teclado.nextLine();
+
+                            boolean renomeada = cliente.renomearDiretorio(nomeAtual, novoNome);
+                            mostrarResultado(renomeada, cliente);
+                            break;
+
+                        case 9:
+                            System.out.println("Digite o nome da pasta que deseja remover:");
+                            String pastaRemover = teclado.nextLine();
+
+                            boolean removida= cliente.removerDiretorio(pastaRemover);
+                            mostrarResultado(removida, cliente);
+                            break;
+
 
                         case 0:
                             System.out.println("Encerrando o programa...");
