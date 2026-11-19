@@ -2,6 +2,10 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPFile;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,4 +96,15 @@ public class ClienteFTP {
         return ftp.removeDirectory(nomePasta);
     }
 
+    public boolean criarArquivo(String nomeArquivo, String conteudo) throws IOException {
+        byte[] dados= conteudo.getBytes(StandardCharsets.UTF_8); //converte o texto em bytes
+        //envia os dados para o servidor
+        try (InputStream arquivo= new ByteArrayInputStream(dados)) {
+            return ftp.storeFile(nomeArquivo, arquivo);
+        }
+    }
+
+    public boolean removerArquivo(String nomeArquivo) throws IOException {
+        return ftp.deleteFile(nomeArquivo);
+    }
 }

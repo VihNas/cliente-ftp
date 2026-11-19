@@ -54,6 +54,8 @@ public class Main {
                 System.out.println("7 - Criar diretório");
                 System.out.println("8 - Renomear diretório");
                 System.out.println("9 - Remover diretório");
+                System.out.println("10 - Criar arquivo");
+                System.out.println("11 - Remover arquivo");
                 System.out.println("0 - Sair");
                 System.out.println("Escolha uma opção:");
 
@@ -125,6 +127,24 @@ public class Main {
                             mostrarResultado(removida, cliente);
                             break;
 
+                        case 10:
+                            System.out.println("Digite o nome do arquivo:");
+                            String nomeArquivo = teclado.nextLine();
+
+                            System.out.println("Digite o conteúdo do arquivo:");
+                            String conteudo = teclado.nextLine();
+
+                            boolean criado = cliente.criarArquivo(nomeArquivo, conteudo);
+                            mostrarResultado(criado, cliente);
+                            break;
+
+                        case 11:
+                            System.out.println("Digite o nome do arquivo que deseja remover:");
+                            String arquivoRemover = teclado.nextLine();
+
+                            boolean removido = cliente.removerArquivo(arquivoRemover);
+                            mostrarResultado(removido, cliente);
+                            break;
 
                         case 0:
                             System.out.println("Encerrando o programa...");
