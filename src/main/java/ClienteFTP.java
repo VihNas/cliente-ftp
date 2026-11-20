@@ -33,8 +33,11 @@ public class ClienteFTP {
 
     public void desconectar() throws IOException {
         if (ftp.isConnected()) {
-            ftp.logout();
-            ftp.disconnect();
+            try {
+                ftp.logout();
+            } finally {
+                ftp.disconnect();
+            }
         }
     }
 
@@ -109,28 +112,26 @@ public class ClienteFTP {
         File arquivo = new File(caminhoArquivo);
 
         if (!arquivo.isFile()) {    //verifica se o arquivo existe
-            System.out.println("Arquivo não encontrado!");
-            return false;
+            throw new FileNotFoundException("Arquivo local não encontrado: " + caminhoArquivo);
         }
 
         //envia o arquivo usando nome original
         try (FileInputStream entrada = new FileInputStream(arquivo)) {
-            boolean sucesso = ftp.storeFile(arquivo.getName(), entrada);
-            System.out.println("Resposta do servidor: " + ftp.getReplyString());
-            return sucesso;
+            return ftp.storeFile(arquivo.getName(), entrada);
         }
     }
 
 
     public boolean baixarArquivo(String nomeArquivo, String caminhoDestino) throws IOException {
         File arquivo= new File(caminhoDestino);
-        try (FileOutputStream saida = new FileOutputStream(arquivo)) {
-            boolean sucesso = ftp.retrieveFile(nomeArquivo, saida);
+        boolean sucesso;
 
-            if (!sucesso) {  //apaga o arquivo caso o download falhe
-                arquivo.delete();
-            }
-            return sucesso;
+        try (FileOutputStream saida = new FileOutputStream(arquivo)) {
+            sucesso = ftp.retrieveFile(nomeArquivo, saida);
         }
+        if (!sucesso) {  //apaga o arquivo caso o download falhe
+            arquivo.delete();
+        }
+        return sucesso;
     }
 }

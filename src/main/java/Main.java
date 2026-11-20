@@ -1,9 +1,10 @@
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     //metodo auxiliar para mostrar o resultado da operação
-    public static void mostrarResultado(boolean sucesso, ClienteFTP cliente) throws IOException {
+    public static void mostrarResultado(boolean sucesso, ClienteFTP cliente) {
         if (sucesso) {
             System.out.println("Operação realizada com sucesso!");
         } else {
@@ -52,7 +53,7 @@ public class Main {
                 System.out.println("5 - Entrar em diretório");
                 System.out.println("6 - Voltar um nível");
                 System.out.println("7 - Criar diretório");
-                System.out.println("8 - Renomear diretório");
+                System.out.println("8 - Renomear diretório ou arquivo");
                 System.out.println("9 - Remover diretório");
                 System.out.println("10 - Criar arquivo");
                 System.out.println("11 - Remover arquivo");
@@ -74,19 +75,11 @@ public class Main {
                             break;
 
                         case 3:
-                            System.out.println("\n--- ARQUIVOS ---");
-
-                            for (String arquivo : cliente.listarArquivos()) {
-                                System.out.println(arquivo);
-                            }
+                            mostrarLista("ARQUIVOS", cliente.listarArquivos());
                             break;
 
                         case 4:
-                            System.out.println("\n--- DIRETÓRIOS ---");
-
-                            for (String diretorio : cliente.listarDiretorios()) {
-                                System.out.println(diretorio);
-                            }
+                            mostrarLista("DIRETÓRIOS", cliente.listarDiretorios());
                             break;
 
                         case 5:
@@ -177,18 +170,18 @@ public class Main {
 
                 } catch (NumberFormatException e) {
                     System.out.println("Digite um número válido!");
+                } catch (IOException e) {
+                    System.out.println("Erro: " + e.getMessage());
                 }
             }
 
         } catch (IOException e) {
             System.out.println("Erro na conexão com o servidor: " + e.getMessage());
-            e.printStackTrace();
 
         } catch (NumberFormatException e) {
             System.out.println("Erro: a porta deve ser um número inteiro.");
 
         } finally {
-
             //tenta encerrar a conexão
             try {
                 cliente.desconectar();
@@ -198,4 +191,17 @@ public class Main {
             teclado.close();
         }
     }
+
+    public static void mostrarLista(String titulo, List<String> lista) {
+        System.out.println("\n--- "+ titulo +" ---");
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum item encontrado.");
+        } else {
+            for (String item : lista) {
+                System.out.println(item);
+            }
+        }
+    }
+
+
 }
